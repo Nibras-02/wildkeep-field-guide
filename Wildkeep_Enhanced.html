@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wildkeep — A Field Guide to the Animal Kingdom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest-deep:#16261C;
+    --forest-mid:#20342A;
+    --parchment:#F4EFDF;
+    --parchment-dim:#E9E2CC;
+    --ink:#241F17;
+    --amber:#C97A3D;
+    --gold:#D9A441;
+    --sage:#8FA98A;
+    --line:rgba(36,31,23,0.16);
+    --card-bg:var(--parchment);
+    --muted:#6b6250;
+  }
+  body[data-theme="dark"]{
+    --parchment:#141F18;
+    --parchment-dim:#1B2A21;
+    --ink:#EDE7D3;
+    --line:rgba(237,231,211,0.14);
+    --card-bg:#1A281F;
+    --muted:#9FB29A;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    transition:background .2s ease, color .2s ease;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{ font-family:'IBM Plex Mono',monospace; }
+  a{color:inherit;}
+  ::selection{background:var(--gold);color:#1B1208;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px;
+    background:rgba(22,38,28,0.94);
+    backdrop-filter:blur(6px);
+    color:var(--parchment);
+    border-bottom:1px solid rgba(244,239,223,0.12);
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces',serif; font-size:20px; font-weight:600;
+  }
+  .brand-mark{
+    width:28px;height:28px;border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gold);
+  }
+  .nav-search{
+    display:flex; align-items:center; gap:8px;
+    background:rgba(244,239,223,0.08);
+    border:1px solid rgba(244,239,223,0.2);
+    border-radius:20px;
+    padding:8px 14px;
+    flex:1; max-width:340px; margin:0 24px;
+  }
+  .nav-search input{
+    background:none;border:none;outline:none;color:var(--parchment);
+    font-family:'Inter',sans-serif;font-size:14px;width:100%;
+  }
+  .nav-search input::placeholder{color:var(--sage);}
+  .nav-right{display:flex; align-items:center; gap:18px;}
+  .nav-links{display:flex; gap:22px; font-size:13px; letter-spacing:0.02em;}
+  .nav-links span{cursor:default; color:var(--sage);}
+  .icon-btn{
+    display:flex; align-items:center; gap:6px;
+    background:rgba(244,239,223,0.08);
+    border:1px solid rgba(244,239,223,0.2);
+    color:var(--parchment);
+    border-radius:20px;
+    padding:8px 12px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px;
+    cursor:pointer; transition:.15s;
+  }
+  .icon-btn:hover{background:rgba(244,239,223,0.16);}
+  .icon-btn.on{background:var(--gold); color:#1B1208; border-color:var(--gold);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:radial-gradient(ellipse at 80% 20%, #2A4433 0%, var(--forest-deep) 55%);
+    color:var(--parchment);
+    padding:88px 32px 96px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+    overflow:hidden;
+    position:relative;
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px; display:block;
+  }
+  .hero h1{
+    font-size:clamp(36px,5vw,58px);
+    line-height:1.05;
+    margin:0 0 20px;
+    max-width:640px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--gold); }
+  .hero p{
+    font-size:17px; line-height:1.6; color:var(--sage);
+    max-width:480px; margin:0 0 28px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    padding:12px 22px; border-radius:8px; border:1px solid transparent;
+    cursor:pointer; transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--amber); color:#1B1208;}
+  .btn-ghost{background:transparent; border-color:rgba(244,239,223,0.35); color:var(--parchment);}
+  .btn-outline{background:transparent; border-color:var(--gold); color:var(--gold);}
+
+  .hero-art{ position:relative; height:340px; }
+  .hero-art svg{width:100%; height:100%;}
+
+  /* ---------- STAT STRIP (new) ---------- */
+  .stat-strip{
+    display:flex; gap:0;
+    background:var(--forest-mid);
+    border-bottom:1px solid rgba(244,239,223,0.1);
+  }
+  .stat{
+    flex:1; padding:18px 32px; text-align:center;
+    border-right:1px solid rgba(244,239,223,0.08);
+  }
+  .stat:last-child{border-right:none;}
+  .stat b{ font-family:'Fraunces',serif; font-size:1.5rem; color:var(--parchment); display:block;}
+  .stat span{ font-size:11px; color:var(--sage); font-family:'IBM Plex Mono',monospace; letter-spacing:0.08em;}
+
+  /* ---------- TAXONOMY RAIL ---------- */
+  .rail-wrap{
+    background:var(--forest-mid);
+    padding:18px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; flex-wrap:wrap;
+    border-bottom:3px solid var(--amber);
+  }
+  .rail{ display:flex; overflow-x:auto; white-space:nowrap; gap:0; }
+  .rail::-webkit-scrollbar{height:0;}
+  .tab{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px;
+    letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--sage);
+    background:rgba(244,239,223,0.05);
+    border:1px solid rgba(244,239,223,0.15);
+    padding:9px 16px; border-radius:6px;
+    margin-right:10px; cursor:pointer;
+    transition:all .15s ease;
+  }
+  .tab:hover{color:var(--parchment); border-color:rgba(244,239,223,0.4);}
+  .tab.active{ background:var(--gold); color:#1B1208; border-color:var(--gold); font-weight:600;}
+
+  .rail-controls{ display:flex; align-items:center; gap:10px; }
+  select{
+    font-family:'IBM Plex Mono',monospace; font-size:12px;
+    background:rgba(244,239,223,0.08);
+    color:var(--parchment);
+    border:1px solid rgba(244,239,223,0.2);
+    border-radius:6px; padding:8px 10px; cursor:pointer;
+  }
+  select option{ color:#1B1208; }
+
+  /* ---------- SPECIMEN GRID ---------- */
+  .section-head{
+    padding:48px 32px 8px;
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px;
+  }
+  .section-head h2{font-size:26px; margin:0;}
+  .count{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--muted);}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:22px;
+    padding:20px 32px 80px;
+  }
+  .card{
+    position:relative;
+    background:var(--card-bg);
+    border:1.5px dashed var(--line);
+    border-radius:4px;
+    padding:20px 18px 18px;
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 24px rgba(22,38,28,0.14);
+    border-color:var(--amber);
+  }
+  .stamp{
+    position:absolute; top:-10px; right:14px;
+    width:38px; height:38px; border-radius:50%;
+    background:var(--forest-deep); color:var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600;
+    border:2px solid var(--parchment);
+  }
+  .fav-btn{
+    position:absolute; top:-10px; left:14px;
+    width:34px; height:34px; border-radius:50%;
+    background:var(--card-bg); color:var(--muted);
+    border:1.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; cursor:pointer; transition:.15s;
+  }
+  .fav-btn:hover{ border-color:var(--gold); color:var(--gold); }
+  .fav-btn.on{ background:var(--gold); color:#1B1208; border-color:var(--gold); }
+  .status-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px; }
+  .card h3{font-size:20px; margin:14px 0 2px;}
+  .sci{
+    font-family:'IBM Plex Mono',monospace; font-style:italic; font-size:12px;
+    color:var(--amber); margin:0 0 10px;
+  }
+  .blurb{font-size:13.5px; line-height:1.55; color:var(--muted); margin:0 0 14px;}
+  .card-foot{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);
+    border-top:1px dashed var(--line); padding-top:10px;
+  }
+  .view-link{color:var(--amber); font-weight:600;}
+
+  /* ---------- DETAIL OVERLAY ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(22,38,28,0.55);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:24px;
+  }
+  .overlay.open{display:flex;}
+  .detail{
+    background:var(--parchment); max-width:560px; width:100%;
+    border-radius:10px; padding:36px; position:relative;
+    max-height:86vh; overflow-y:auto;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  }
+  .detail-close{
+    position:absolute; top:18px; right:18px;
+    width:30px;height:30px;border-radius:50%;
+    border:1px solid var(--line); background:none; cursor:pointer; font-size:15px; color:var(--ink);
+  }
+  .detail-fav{
+    position:absolute; top:18px; right:58px;
+    width:30px;height:30px;border-radius:50%;
+    border:1px solid var(--line); background:none; cursor:pointer; font-size:14px; color:var(--muted);
+  }
+  .detail-fav.on{ background:var(--gold); color:#1B1208; border-color:var(--gold); }
+  .detail-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--amber); text-transform:uppercase; letter-spacing:0.1em;}
+  .detail h2{font-size:30px; margin:8px 0 2px;}
+  .detail .sci{font-size:14px; margin-bottom:18px;}
+  .fact-row{display:grid; grid-template-columns:110px 1fr; gap:10px; font-size:13.5px; padding:9px 0; border-bottom:1px solid var(--line);}
+  .fact-row span:first-child{color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; padding-top:1px;}
+  .detail-note{margin-top:18px; padding:14px 16px; background:var(--parchment-dim); border-left:3px solid var(--amber); font-size:13.5px; line-height:1.55; border-radius:4px;}
+
+  footer{
+    background:var(--forest-deep); color:var(--sage);
+    padding:32px; text-align:center; font-size:12.5px;
+  }
+  footer b{color:var(--parchment);}
+
+  @media (max-width:840px){
+    .hero{grid-template-columns:1fr; padding:64px 20px 48px;}
+    .hero-art{height:220px; order:-1;}
+    .nav{padding:14px 18px;}
+    .nav-search{display:none;}
+    .section-head, .grid{padding-left:20px; padding-right:20px;}
+    .stat-strip{flex-wrap:wrap;}
+    .stat{flex:1 1 50%; border-right:none; border-bottom:1px solid rgba(244,239,223,0.08);}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="brand-mark">W</span> Wildkeep</div>
+  <div class="nav-search">
+    <span class="mono" style="color:var(--sage);font-size:13px;">⌕</span>
+    <input id="searchInput" placeholder="Search a species, habitat, or diet…" />
+  </div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <span>Field Guide</span><span>About</span><span>Journal</span>
+    </div>
+    <button class="icon-btn" id="themeToggle">☾ Dark</button>
+    <button class="icon-btn" id="favToggle">♥ Favorites <span id="favCount">0</span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <span class="hero-eyebrow">Vol. 01 — Est. specimen archive</span>
+    <h1>A field guide to the <em>animal kingdom</em>, kept like a collector's notebook.</h1>
+    <p>Every entry is catalogued the way a naturalist would keep it — classification, habitat, and the one fact worth remembering. Browse by phylum, star your favourites, or let the archive pick a specimen for you.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="document.getElementById('gridTop').scrollIntoView({behavior:'smooth'})">Open the archive</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('railTop').scrollIntoView({behavior:'smooth'})">Browse by class</button>
+      <button class="btn btn-outline" id="randomBtn">🎲 Surprise me</button>
+    </div>
+  </div>
+  <div class="hero-art">
+    <svg viewBox="0 0 400 340" fill="none">
+      <ellipse cx="200" cy="300" rx="160" ry="18" fill="#0E1912"/>
+      <path d="M60 220 Q90 130 180 120 Q210 60 270 80 Q320 95 300 150 Q340 160 330 200 Q320 240 260 235 Q200 260 140 240 Q80 250 60 220Z" fill="#2E4A38" stroke="#D9A441" stroke-width="1.5" opacity="0.9"/>
+      <circle cx="272" cy="102" r="6" fill="#16261C"/>
+      <path d="M100 200 Q130 170 170 195" stroke="#8FA98A" stroke-width="2" fill="none" opacity="0.6"/>
+      <path d="M180 230 Q220 250 260 220" stroke="#8FA98A" stroke-width="2" fill="none" opacity="0.6"/>
+      <text x="30" y="40" font-family="IBM Plex Mono" font-size="11" fill="#8FA98A" letter-spacing="2">FIG. 01 — CHORDATA</text>
+    </svg>
+  </div>
+</section>
+
+<div class="stat-strip">
+  <div class="stat"><b id="statTotal">0</b><span>SPECIMENS LOGGED</span></div>
+  <div class="stat"><b id="statEndangered">0</b><span>ENDANGERED / VULNERABLE</span></div>
+  <div class="stat"><b id="statClasses">0</b><span>CLASSES REPRESENTED</span></div>
+  <div class="stat"><b id="statFavs">0</b><span>YOUR FAVOURITES</span></div>
+</div>
+
+<div id="railTop" class="rail-wrap">
+  <div class="rail" id="rail"></div>
+  <div class="rail-controls">
+    <select id="statusFilter">
+      <option value="All">All statuses</option>
+    </select>
+    <select id="sortSelect">
+      <option value="name">Sort: Name A–Z</option>
+      <option value="status">Sort: Conservation status</option>
+      <option value="class">Sort: Class</option>
+    </select>
+  </div>
+</div>
+
+<div id="gridTop" class="section-head">
+  <h2>Catalogue entries</h2>
+  <span class="count" id="resultCount"></span>
+</div>
+<div class="grid" id="grid"></div>
+
+<div class="overlay" id="overlay">
+  <div class="detail" id="detailBody"></div>
+</div>
+
+<footer>
+  Wildkeep — a fan-made, independently built field guide concept. <b>Not affiliated with ZooLearn or any other app.</b> Built for learning purposes.
+</footer>
+
+<script>
+const CLASS_META = {
+  Mammalia:  {abbr:'MAM', color:'#C97A3D'},
+  Reptilia:  {abbr:'REP', color:'#6B8E4E'},
+  Aves:      {abbr:'AVE', color:'#5C8FB0'},
+  Amphibia:  {abbr:'AMP', color:'#9B7BB8'},
+  Insecta:   {abbr:'INS', color:'#D9A441'},
+  Actinopterygii: {abbr:'FSH', color:'#4E8FA0'}
+};
+
+const STATUS_ORDER = ['Endangered','Vulnerable','Near Threatened','Least Concern'];
+const STATUS = {
+  'Least Concern': '#6B8E4E',
+  'Vulnerable': '#D9A441',
+  'Endangered': '#C1502E',
+  'Near Threatened': '#B98A3E'
+};
+
+const ANIMALS = [
+  {name:'Bengal Tiger', sci:'Panthera tigris tigris', class:'Mammalia', habitat:'Mangroves & dry forests, South Asia', diet:'Carnivore', status:'Endangered', fact:'Each tiger\'s stripe pattern is unique, like a fingerprint, and no two are ever identical.'},
+  {name:'Indian Gaur', sci:'Bos gaurus', class:'Mammalia', habitat:'Evergreen forests & hill ranges, India', diet:'Herbivore', status:'Vulnerable', fact:'The largest wild bovine on Earth, standing up to 2.2 metres at the shoulder.'},
+  {name:'Sloth Bear', sci:'Melursus ursinus', class:'Mammalia', habitat:'Lowland forests & grasslands, Indian subcontinent', diet:'Omnivore', status:'Vulnerable', fact:'Its shaggy coat and missing front teeth evolved for one job: raiding termite mounds.'},
+  {name:'Mugger Crocodile', sci:'Crocodylus palustris', class:'Reptilia', habitat:'Freshwater lakes & rivers, South Asia', diet:'Carnivore', status:'Vulnerable', fact:'Unlike its saltwater cousin, the mugger prefers slow rivers and man-made reservoirs.'},
+  {name:'Indian Rock Python', sci:'Python molurus', class:'Reptilia', habitat:'Grasslands, marshes & rocky foothills', diet:'Carnivore', status:'Near Threatened', fact:'It kills by constriction, not venom, and can go months between meals.'},
+  {name:'Indian Star Tortoise', sci:'Geochelone elegans', class:'Reptilia', habitat:'Scrub forest & dry grassland, India', diet:'Herbivore', status:'Vulnerable', fact:'The star-shaped shell pattern grows more pronounced with every year of age.'},
+  {name:'Great Indian Hornbill', sci:'Buceros bicornis', class:'Aves', habitat:'Dense evergreen forest canopy', diet:'Frugivore', status:'Vulnerable', fact:'The male seals the female into a tree cavity with mud while she incubates eggs.'},
+  {name:'Sarus Crane', sci:'Antigone antigone', class:'Aves', habitat:'Wetlands & paddy fields, South Asia', diet:'Omnivore', status:'Vulnerable', fact:'The tallest flying bird alive, and known to mate for life.'},
+  {name:'Indian Peafowl', sci:'Pavo cristatus', class:'Aves', habitat:'Open forest & farmland, South Asia', diet:'Omnivore', status:'Least Concern', fact:'A peacock\'s train isn\'t its tail — those are elongated upper tail-covert feathers.'},
+  {name:'Malabar Gliding Frog', sci:'Rhacophorus malabaricus', class:'Amphibia', habitat:'Western Ghats rainforest canopy', diet:'Insectivore', status:'Least Concern', fact:'Webbed feet let it glide between trees instead of climbing all the way down.'},
+  {name:'Purple Frog', sci:'Nasikabatrachus sahyadrensis', class:'Amphibia', habitat:'Underground burrows, Western Ghats', diet:'Insectivore (termites)', status:'Endangered', fact:'Spends almost its whole life underground, surfacing for just two weeks a year to breed.'},
+  {name:'Atlas Moth', sci:'Attacus atlas', class:'Insecta', habitat:'Tropical forests, South & Southeast Asia', diet:'None as adult (no functional mouth)', status:'Least Concern', fact:'One of the largest moths on Earth by wing surface area — it never eats as an adult.'},
+  {name:'Giant Wood Spider', sci:'Nephila pilipes', class:'Insecta', habitat:'Forest edges, South & Southeast Asia', diet:'Carnivore (insects)', status:'Least Concern', fact:'Spins webs of golden-hued silk strong enough to trap small birds by accident.'},
+  {name:'Ganges River Dolphin', sci:'Platanista gangetica', class:'Mammalia', habitat:'Ganges-Brahmaputra river system', diet:'Carnivore', status:'Endangered', fact:'Functionally blind — it navigates entirely by echolocation in murky river water.'},
+  {name:'Mahseer', sci:'Tor putitora', class:'Actinopterygii', habitat:'Fast-flowing Himalayan rivers', diet:'Omnivore', status:'Endangered', fact:'Prized by anglers as the "tiger of the water" for its fierce fight on a line.'},
+  {name:'Archerfish', sci:'Toxotes jaculatrix', class:'Actinopterygii', habitat:'Mangrove estuaries, South & Southeast Asia', diet:'Carnivore', status:'Least Concern', fact:'Spits a precise jet of water to knock insects off overhanging leaves.'}
+];
+
+let activeClass = 'All';
+let activeStatus = 'All';
+let sortBy = 'name';
+let query = '';
+let showFavsOnly = false;
+const favourites = new Set(); // in-memory for this session
+
+function renderRail(){
+  const classes = ['All', ...Object.keys(CLASS_META)];
+  const rail = document.getElementById('rail');
+  rail.innerHTML = classes.map(c => `<span class="tab ${c===activeClass?'active':''}" data-class="${c}">${c}</span>`).join('');
+  rail.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    activeClass = t.dataset.class;
+    renderRail();
+    renderGrid();
+  }));
+}
+
+function populateStatusFilter(){
+  const sel = document.getElementById('statusFilter');
+  STATUS_ORDER.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', e => { activeStatus = e.target.value; renderGrid(); });
+}
+
+function sortAnimals(list){
+  const copy = [...list];
+  if(sortBy === 'name') copy.sort((a,b) => a.name.localeCompare(b.name));
+  else if(sortBy === 'status') copy.sort((a,b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status));
+  else if(sortBy === 'class') copy.sort((a,b) => a.class.localeCompare(b.class));
+  return copy;
+}
+
+function filtered(){
+  let list = ANIMALS.filter(a => {
+    const matchClass = activeClass === 'All' || a.class === activeClass;
+    const matchStatus = activeStatus === 'All' || a.status === activeStatus;
+    const matchQuery = !query || a.name.toLowerCase().includes(query) || a.sci.toLowerCase().includes(query) || a.habitat.toLowerCase().includes(query) || a.diet.toLowerCase().includes(query);
+    const matchFav = !showFavsOnly || favourites.has(a.name);
+    return matchClass && matchStatus && matchQuery && matchFav;
+  });
+  return sortAnimals(list);
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent = ANIMALS.length;
+  document.getElementById('statEndangered').textContent = ANIMALS.filter(a => a.status === 'Endangered' || a.status === 'Vulnerable').length;
+  document.getElementById('statClasses').textContent = Object.keys(CLASS_META).length;
+  document.getElementById('statFavs').textContent = favourites.size;
+  document.getElementById('favCount').textContent = favourites.size;
+}
+
+function toggleFav(name, e){
+  if(e) e.stopPropagation();
+  if(favourites.has(name)) favourites.delete(name); else favourites.add(name);
+  updateStats();
+  renderGrid();
+}
+
+function renderGrid(){
+  const data = filtered();
+  document.getElementById('resultCount').textContent = `${data.length} of ${ANIMALS.length} entries`;
+  const grid = document.getElementById('grid');
+  if(data.length === 0){
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:40px 0;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:13px;">No entries match that search. Try another name, class, or status.</div>`;
+    return;
+  }
+  grid.innerHTML = data.map((a) => {
+    const meta = CLASS_META[a.class];
+    const statusColor = STATUS[a.status] || '#6b6250';
+    const isFav = favourites.has(a.name);
+    return `
+    <div class="card" data-name="${a.name}">
+      <button class="fav-btn ${isFav?'on':''}" data-name="${a.name}" title="Toggle favourite">${isFav ? '♥' : '♡'}</button>
+      <div class="stamp" style="border-color:${meta.color}; color:${meta.color};">${meta.abbr}</div>
+      <span class="status-dot" style="background:${statusColor};"></span><span class="mono" style="font-size:11px;color:var(--muted);">${a.status}</span>
+      <h3>${a.name}</h3>
+      <p class="sci">${a.sci}</p>
+      <p class="blurb">${a.habitat}</p>
+      <div class="card-foot">
+        <span>${a.diet}</span>
+        <span class="view-link">View entry →</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.fav-btn').forEach(btn => {
+    btn.addEventListener('click', e => toggleFav(btn.dataset.name, e));
+  });
+  grid.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const animal = ANIMALS.find(a => a.name === card.dataset.name);
+      openDetail(animal);
+    });
+  });
+}
+
+function openDetail(a){
+  const meta = CLASS_META[a.class];
+  const isFav = favourites.has(a.name);
+  document.getElementById('detailBody').innerHTML = `
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <button class="detail-fav ${isFav?'on':''}" id="detailFavBtn">${isFav ? '♥' : '♡'}</button>
+    <span class="detail-eyebrow">${a.class} · ${meta.abbr}</span>
+    <h2>${a.name}</h2>
+    <p class="sci">${a.sci}</p>
+    <div class="fact-row"><span>Habitat</span><span>${a.habitat}</span></div>
+    <div class="fact-row"><span>Diet</span><span>${a.diet}</span></div>
+    <div class="fact-row"><span>Status</span><span>${a.status}</span></div>
+    <div class="detail-note">${a.fact}</div>
+  `;
+  document.getElementById('detailFavBtn').addEventListener('click', () => {
+    toggleFav(a.name);
+    openDetail(a);
+  });
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closeDetail(); });
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  query = e.target.value.trim().toLowerCase();
+  renderGrid();
+});
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  sortBy = e.target.value;
+  renderGrid();
+});
+
+document.getElementById('favToggle').addEventListener('click', () => {
+  showFavsOnly = !showFavsOnly;
+  document.getElementById('favToggle').classList.toggle('on', showFavsOnly);
+  renderGrid();
+});
+
+document.getElementById('randomBtn').addEventListener('click', () => {
+  const pool = filtered().length ? filtered() : ANIMALS;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  openDetail(pick);
+});
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const body = document.body;
+  const isDark = body.getAttribute('data-theme') === 'dark';
+  body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeToggle').textContent = isDark ? '☾ Dark' : '☀ Light';
+});
+
+populateStatusFilter();
+renderRail();
+renderGrid();
+updateStats();
+</script>
+</body>
+</html>
